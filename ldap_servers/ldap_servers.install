@@ -814,6 +814,18 @@ function ldap_servers_update_7206() {
   }
 }
 
+/**
+ * Change port to allow either a string PHP constant or an integer.
+ */
+function ldap_servers_update_7207() {
+  db_change_field('ldap_servers', 'port', 'port', array(
+    'type' => 'varchar',
+    'not null' => FALSE,
+    'default' => '389',
+    'length' => 255,
+  ));
+}
+
 function ldap_servers_install_update_schema($schema, &$change_log) {
   foreach ($schema as $table_name => $table_schema) {
     foreach ($table_schema['fields'] as $field_name => $field_schema) {

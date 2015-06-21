@@ -272,8 +272,13 @@ class LdapServer {
    */
   function connect() {
 
-    if (!$con = ldap_connect($this->address, $this->port)) {
-      watchdog('user', 'LDAP Connect failure to ' . $this->address . ':' . $this->port);
+    $resolved_port = $this->port;
+    if (!is_numeric($resolved_port)) {
+      // If it's a string, then attempt to use it as the name of a PHP constant.
+      $resolved_port = constant($resolved_port);
+    }
+    if (!$con = ldap_connect($this->address, $resolved_port)) {
+      watchdog('user', 'LDAP Connect failure to ' . $this->address . ':' . $resolved_port);
       return LDAP_CONNECT_ERROR;
     }
 

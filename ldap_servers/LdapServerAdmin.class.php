@@ -365,11 +365,6 @@ class LdapServerAdmin extends LdapServer {
       }
     }
 
-
-    if (!is_numeric($this->port)) {
-      $errors['port'] =  t('The TCP/IP port must be an integer.');
-    }
-
     if ($this->bind_method == LDAP_SERVERS_BIND_METHOD_USER && !$this->user_dn_expression) {
       $errors['user_dn_expression'] =  t('When using "Bind with Users Credentials", Expression for user DN is required');
     }
@@ -620,13 +615,14 @@ public function drupalFormSubmit($op, $values) {
           'fieldset' => 'server',
           '#type' => 'textfield',
           '#title' => t('LDAP port'),
-          '#size' => 5,
-          '#description' => t('The TCP/IP port on the above server which accepts LDAP connections. Must be an integer.'),
+          '#size' => 50,
+          '#description' => t('The TCP/IP port on the above server which accepts LDAP connections. You may provide a string PHP constant, which must contain the port number.'),
         ),
         'schema' => array(
-          'type' => 'int',
+          'type' => 'varchar',
           'not null' => FALSE,
-          'default' => 389,
+          'default' => '389',
+          'length' => 255,
         ),
       ),
 
